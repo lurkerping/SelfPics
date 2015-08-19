@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string name="app_name">孕妈妈</string>
+    <string name="action_list">查看</string>
+    <string name="action_add">加入</string>
+    <string name="takePhoto">Take A Photo</string>
+    <string name="choosePics">Choose From Album</string>
+    <string name="whats">What???</string>
+    <string name="title_activity_view">图片</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_list">所有图片</string>
+    <string name="title_activity_main">左手右手</string>
+
+    <!-- 手势密码部分 -->
+    <string name="action_settings">Settings</string>
+    <string name="cancel">取消</string>
+    <string name="try_again">重试</string>
+    <string name="goon">继续</string>
+    <string name="confirm">确认</string>
+    <string name="lockpattern_recording_incorrect_too_short">"至少连接4个点，请重试"</string>
+    <string name="lockpattern_error">"手势密码不对"</string>
+    <!-- Accessibility description sent when user starts drawing a lock pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_start">Pattern started</string>
+    <!-- Accessibility description sent when the pattern times out and is cleared. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_cleared">Pattern cleared</string>
+    <!-- Accessibility description sent when user adds a cell to the pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_cell_added">Cell added</string>
+    <!-- Accessibility description sent when user completes drawing a pattern. [CHAR LIMIT=NONE] -->
+    <string name="lockscreen_access_pattern_detected">Pattern completed</string>
+
+</resources>

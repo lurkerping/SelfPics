@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/btn_code_lock_default_holo.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/btn_code_lock_touched_holo.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/indicator_code_lock_drag_direction_green_up.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/indicator_code_lock_drag_direction_red_up.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/indicator_code_lock_point_area_default_holo.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/indicator_code_lock_point_area_green_holo.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/indicator_code_lock_point_area_red_holo.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_lock_setup.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/values-w820dp/attrs.xml" charset="GBK" />
+  </component>
+</project>
+
