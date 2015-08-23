@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xplmc.selfpics.R;
-import com.xplmc.selfpics.component.common.Side;
+import com.xplmc.selfpics.common.Side;
 
 /**
  * Created by xiaoping on 2015/8/19.

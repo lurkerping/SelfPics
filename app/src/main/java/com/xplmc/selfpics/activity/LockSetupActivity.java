@@ -1,4 +1,4 @@
-package com.xplmc.selfpics;
+package com.xplmc.selfpics.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.xplmc.selfpics.R;
 import com.xplmc.selfpics.component.LockPatternView;
 
 import java.util.List;

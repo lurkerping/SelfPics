@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.xplmc.selfpics.ViewActivity">
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.xplmc.selfpics.activity.ViewActivity">
     <item android:id="@+id/action_add" android:title="@string/action_add"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

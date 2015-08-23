@@ -1,4 +1,4 @@
-package com.xplmc.selfpics.component.common;
+package com.xplmc.selfpics.common;
 
 /**
  * 左边右边

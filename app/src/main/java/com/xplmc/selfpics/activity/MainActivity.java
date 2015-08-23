@@ -1,25 +1,38 @@
-package com.xplmc.selfpics;
+package com.xplmc.selfpics.activity;
 
 import android.app.FragmentManager;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.xplmc.selfpics.R;
+import com.xplmc.selfpics.common.CommonConstants;
 import com.xplmc.selfpics.component.MainFragment;
-import com.xplmc.selfpics.component.common.Side;
+import com.xplmc.selfpics.common.Side;
+import com.xplmc.selfpics.component.PictureHolder;
+import com.xplmc.selfpics.model.Picture;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements MainFragment.OnLeftRightClickListener {
+
+    public static final String TAG = "MainActivity";
 
     public static final int RESULT_CODE_LEFT = 1;
     public static final int RESULT_CODE_RIGHT = 2;
@@ -54,7 +67,7 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnLe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_list) {
-            Intent intent = new Intent(this, ListActivity.class);
+            Intent intent = new Intent(this, PictureListActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -63,21 +76,23 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnLe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (resultCode == RESULT_OK) {
-            Uri uri = null;
             switch (requestCode) {
                 case RESULT_CODE_LEFT:
-                    File f = new File(mCurrentPhotoPath);
-                    uri = Uri.fromFile(f);
                     break;
                 case RESULT_CODE_RIGHT:
-                    uri = data.getData();
+                    Uri uri = data.getData();
+                    copyImage(uri);
                     break;
                 default:
                     break;
             }
-            if (uri != null) {
-                Intent intent = new Intent(this, ViewActivity.class);
-                intent.setData(uri);
+            if(mCurrentPhotoPath != null){
+                Picture picture = new Picture(mCurrentPhotoPath);
+                List<Picture> pictureList = PictureHolder.getInstance().getPictureList();
+                pictureList.add(picture);
+
+                Intent intent = new Intent(this, ViewPagerActivity.class);
+                intent.putExtra(CommonConstants.EXTRA_FILE_PATH, mCurrentPhotoPath);
                 startActivity(intent);
             }
         } else {
@@ -109,7 +124,7 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnLe
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Log.e(TAG, ex.getMessage(), ex);
                 Toast.makeText(MainActivity.this, "创建文件失败！", Toast.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
@@ -130,19 +145,50 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnLe
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        File storageDir = getExternalFilesDir(CommonConstants.SECRET_PATH);
         if (storageDir.exists() == false) {
             storageDir.mkdir();
         }
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        File image = new File(storageDir, imageFileName);
         mCurrentPhotoPath = image.getAbsolutePath();
+        Log.d(TAG, mCurrentPhotoPath);
         return image;
+    }
+
+    private void copyImage(Uri uri){
+
+        ContentResolver cr = this.getContentResolver();
+        OutputStream os = null;
+        InputStream is = null;
+        try{
+            os = new FileOutputStream(createImageFile());
+            is = new BufferedInputStream(cr.openInputStream(uri));
+            byte[] buffer = new byte[1024 * 8];
+            int len = 0;
+            while((len = is.read(buffer)) != -1){
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        } catch(Exception e) {
+            Toast.makeText(this, "文件保存失败！", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, e.getMessage(), e);
+        }finally {
+            if(is != null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            }
+            if(os != null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            }
+        }
     }
 
 }
