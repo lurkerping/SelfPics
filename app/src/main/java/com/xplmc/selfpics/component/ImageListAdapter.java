@@ -3,12 +3,14 @@ package com.xplmc.selfpics.component;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.xplmc.selfpics.R;
 import com.xplmc.selfpics.common.PictureUtils;
 import com.xplmc.selfpics.common.ScaleSize;
 import com.xplmc.selfpics.model.Picture;
@@ -20,13 +22,14 @@ import java.util.List;
  * Created by xiaoping on 2015/8/16.
  */
 public class ImageListAdapter extends BaseAdapter {
-
+    private LayoutInflater mInflater;
     private Context mContext;
 
     private List<Picture> pictureList = null;
 
     public ImageListAdapter(Context c) {
         mContext = c;
+        mInflater = LayoutInflater.from(mContext);
         pictureList = PictureHolder.getInstance().getPictureList();
     }
 
@@ -47,35 +50,36 @@ public class ImageListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        final ImageView imageView;
         final String filePath = pictureList.get(position).getFilePath();
+        final viewHolder mHolder;
         if(convertView == null){
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(1, 1, 1, 1);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        final BitmapDrawable drawable = PictureUtils.getScaledDrawable((Activity)mContext, filePath, ScaleSize.THIRD);
-                        imageView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                imageView.setImageDrawable(drawable);
-                            }
-                        });
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }else {
-            imageView = (ImageView)convertView;
-        }
-        return imageView;
-    }
+            mHolder=new viewHolder();
+            convertView = mInflater.inflate(R.layout.gv_item, null);
+            mHolder.imageView=(ImageView)convertView.findViewById(R.id.iv);
+            convertView.setTag(mHolder);
 
+        }else {
+            mHolder = (viewHolder) convertView.getTag();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    final BitmapDrawable drawable = PictureUtils.getScaledDrawable((Activity)mContext, filePath, ScaleSize.THIRD);
+                    mHolder.imageView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mHolder.imageView.setImageDrawable(drawable);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        return convertView;
+    }
+    class viewHolder{
+        ImageView imageView;
+    }
 }
