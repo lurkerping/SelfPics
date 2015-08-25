@@ -5,7 +5,7 @@ package com.xplmc.selfpics.common;
  */
 public class CommonConstants {
 
-    public static final String PHOTO_SUFFIX = ".png";
+    public static final String PHOTO_SUFFIX = ".jpg";
 
     public static final String SECRET_PATH = "efd0001282ggg";
 

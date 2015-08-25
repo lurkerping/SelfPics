@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -15,8 +14,8 @@ import android.widget.Toast;
 
 import com.xplmc.selfpics.R;
 import com.xplmc.selfpics.common.CommonConstants;
-import com.xplmc.selfpics.component.MainFragment;
 import com.xplmc.selfpics.common.Side;
+import com.xplmc.selfpics.component.MainFragment;
 import com.xplmc.selfpics.component.PictureHolder;
 import com.xplmc.selfpics.model.Picture;
 
@@ -50,27 +49,6 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnLe
             fm.beginTransaction().add(R.id.mainContainer, new MainFragment()).commit();
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_list) {
-            Intent intent = new Intent(this, PictureListActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -145,7 +123,7 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnLe
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        String imageFileName = "JPEG_" + timeStamp + CommonConstants.PHOTO_SUFFIX;
         File storageDir = getExternalFilesDir(CommonConstants.SECRET_PATH);
         if (storageDir.exists() == false) {
             storageDir.mkdir();
