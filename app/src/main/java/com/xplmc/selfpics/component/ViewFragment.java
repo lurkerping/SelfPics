@@ -18,20 +18,27 @@ public class ViewFragment extends Fragment {
 
     public static final String TAG = "ViewFragment";
 
+    public static final String KEY_FILE_PATH = "filePath";
+
     private ImageView mIvView = null;
 
     private String filePath = null;
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
     public ViewFragment(){}
 
+    public static ViewFragment newInstance(String filePath){
+        ViewFragment viewFragment = new ViewFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_FILE_PATH, filePath);
+        viewFragment.setArguments(args);
+        return viewFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        filePath = getArguments() != null ? getArguments().getString(KEY_FILE_PATH) : null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

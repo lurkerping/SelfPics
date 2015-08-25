@@ -39,8 +39,7 @@ public class ViewPagerActivity extends FragmentActivity {
             @Override
             public Fragment getItem(int position) {
                 Picture picture = pictureList.get(position);
-                ViewFragment viewFragment = new ViewFragment();
-                viewFragment.setFilePath(picture.getFilePath());
+                ViewFragment viewFragment = ViewFragment.newInstance(picture.getFilePath());
                 return viewFragment;
             }
 
