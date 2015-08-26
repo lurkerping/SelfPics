@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.xplmc.selfpics.R;
@@ -22,9 +23,6 @@ import com.xplmc.selfpics.model.Picture;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import static com.xplmc.selfpics.R.id;
-import static com.xplmc.selfpics.R.layout;
-
 /**
  * Created by xiaoping on 2015/8/16.
  */
@@ -32,14 +30,19 @@ public class ImageListAdapter extends BaseAdapter {
 
     public static final String TAG = "ImageListAdapter";
 
+    private int numColumns = 0;
+    private int itemHeight = 0;
     private LayoutInflater mInflater;
     private Context mContext;
     private Bitmap mLoadingBitmap;
+    private GridView.LayoutParams mImageViewLayoutParams;
 
     private List<Picture> pictureList = null;
 
     public ImageListAdapter(Context c) {
         mContext = c;
+        mImageViewLayoutParams = new GridView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mInflater = LayoutInflater.from(mContext);
         pictureList = PictureHolder.getInstance().getPictureList();
         setLoadingImage();
@@ -47,6 +50,24 @@ public class ImageListAdapter extends BaseAdapter {
 
     public void setLoadingImage() {
         mLoadingBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.handsome);
+    }
+
+    public int getItemHeight() {
+        return itemHeight;
+    }
+
+    public void setItemHeight(int itemHeight) {
+        this.itemHeight = itemHeight;
+        mImageViewLayoutParams = new GridView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
+    }
+
+    public int getNumColumns() {
+        return numColumns;
+    }
+
+    public void setNumColumns(int numColumns) {
+        this.numColumns = numColumns;
     }
 
     @Override
@@ -67,21 +88,19 @@ public class ImageListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final String filePath = pictureList.get(position).getFilePath();
-        final ViewHolder mHolder;
+        final ImageView imageView;
         if (convertView == null) {
-            mHolder = new ViewHolder();
-            convertView = mInflater.inflate(layout.gv_item, null);
-            mHolder.imageView = (ImageView) convertView.findViewById(id.iv);
-            convertView.setTag(mHolder);
+            imageView = new ImageView(mContext);
+            imageView.setLayoutParams(mImageViewLayoutParams);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
-            mHolder = (ViewHolder) convertView.getTag();
+            imageView = (ImageView) convertView;
         }
-        this.loadBitmap(filePath, mHolder.imageView);
-        return convertView;
-    }
-
-    class ViewHolder {
-        ImageView imageView;
+        if (imageView.getLayoutParams().height != itemHeight) {
+            imageView.setLayoutParams(mImageViewLayoutParams);
+        }
+        this.loadBitmap(filePath, imageView);
+        return imageView;
     }
 
     private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
@@ -157,16 +176,16 @@ public class ImageListAdapter extends BaseAdapter {
         }
     }
 
-    class AsyncDrawable extends BitmapDrawable{
+    class AsyncDrawable extends BitmapDrawable {
 
         private WeakReference<BitmapWorkerTask> task = null;
 
-        public AsyncDrawable(Resources rs, Bitmap bitmap, BitmapWorkerTask task){
+        public AsyncDrawable(Resources rs, Bitmap bitmap, BitmapWorkerTask task) {
             super(rs, bitmap);
-             this.task = new WeakReference<BitmapWorkerTask>(task);
+            this.task = new WeakReference<BitmapWorkerTask>(task);
         }
 
-        public BitmapWorkerTask getTask(){
+        public BitmapWorkerTask getTask() {
             return this.task.get();
         }
 

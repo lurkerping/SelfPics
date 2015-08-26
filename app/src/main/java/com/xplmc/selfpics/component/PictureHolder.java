@@ -1,6 +1,7 @@
 package com.xplmc.selfpics.component;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.xplmc.selfpics.common.CommonConstants;
 import com.xplmc.selfpics.model.Picture;
@@ -45,6 +46,22 @@ public class PictureHolder {
         });
         if (fileList2 != null && fileList2.length > 0) {
             for (File file : fileList2) {
+                Picture picture = new Picture();
+                picture.setFilePath(file.getAbsolutePath());
+                pictureList.add(picture);
+            }
+        }
+
+        File[] fileList3 = Environment.getExternalStoragePublicDirectory("我的照片").listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isFile() &&
+                        (pathname.getName().endsWith(CommonConstants.PHOTO_SUFFIX)
+                                || pathname.getName().endsWith(CommonConstants.PHOTO_SUFFIX.toUpperCase()));
+            }
+        });
+        if (fileList3 != null && fileList3.length > 0) {
+            for (File file : fileList3) {
                 Picture picture = new Picture();
                 picture.setFilePath(file.getAbsolutePath());
                 pictureList.add(picture);
